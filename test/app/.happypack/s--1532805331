@@ -1,0 +1,21 @@
+'use strict';
+
+/**
+ * Created by moyu on 2017/7/30.
+ */
+require('/Users/moyu/my-code/NodeCode/fly-js/test/app/index.js');
+
+if (module.hot) {
+    module.hot.accept('/Users/moyu/my-code/NodeCode/fly-js/test/app/index.js', function () {
+        require('/Users/moyu/my-code/NodeCode/fly-js/test/app/index.js');
+    });
+}
+;
+
+(function () {
+    if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+        return;
+    }
+})();
+
+;

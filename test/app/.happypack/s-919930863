@@ -1,0 +1,44 @@
+/**
+ * Copyright 2014-present, Facebook, Inc.
+ * All rights reserved.
+ *
+ * This source code is licensed under the BSD-style license found in the
+ * LICENSE file in the root directory of this source tree. An additional grant
+ * of patent rights can be found in the PATENTS file in the same directory.
+ *
+ */
+
+'use strict';
+
+var emptyComponentFactory;
+
+var ReactEmptyComponentInjection = {
+  injectEmptyComponentFactory: function injectEmptyComponentFactory(factory) {
+    emptyComponentFactory = factory;
+  }
+};
+
+var ReactEmptyComponent = {
+  create: function create(instantiate) {
+    return emptyComponentFactory(instantiate);
+  }
+};
+
+ReactEmptyComponent.injection = ReactEmptyComponentInjection;
+
+module.exports = ReactEmptyComponent;
+;
+
+(function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
+
+  __REACT_HOT_LOADER__.register(emptyComponentFactory, 'emptyComponentFactory', '/Users/moyu/my-code/NodeCode/fly-js/test/app/node_modules/react-dom/lib/ReactEmptyComponent.js');
+
+  __REACT_HOT_LOADER__.register(ReactEmptyComponentInjection, 'ReactEmptyComponentInjection', '/Users/moyu/my-code/NodeCode/fly-js/test/app/node_modules/react-dom/lib/ReactEmptyComponent.js');
+
+  __REACT_HOT_LOADER__.register(ReactEmptyComponent, 'ReactEmptyComponent', '/Users/moyu/my-code/NodeCode/fly-js/test/app/node_modules/react-dom/lib/ReactEmptyComponent.js');
+})();
+
+;
