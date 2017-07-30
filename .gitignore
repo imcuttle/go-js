@@ -49,6 +49,4 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-!/src/node_modules/
-/src/.happypack/
-/.happypack/
+.happypack/
