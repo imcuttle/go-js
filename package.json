@@ -1,7 +1,7 @@
 {
   "name": "go-js",
   "version": "1.0.0",
-  "description": "",
+  "description": "future frontend javascript server",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,7 +10,7 @@
     "gojs": "bin/gojs.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "moyuyc",
   "license": "MIT",
   "baseDependencies": {
     "babel-core": "6.18.2",
@@ -48,5 +48,16 @@
     "webpack-hot-middleware": "^2.18.2",
     "npm-install-webpack-plugin": "^4.0.4"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moyuyc/go-js.git"
+  },
+  "bugs": {
+    "url": "https://github.com/moyuyc/go-js/issues"
+  },
+  "homepage": "https://github.com/moyuyc/go-js#readme"
 }
