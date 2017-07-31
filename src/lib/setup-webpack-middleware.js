@@ -119,23 +119,4 @@ function maybeNotBundle(entry, fn) {
     }
 }
 
-function maybeNotHot(entry, fn) {
-    // entry = _.cloneDeep(entry)
-    return (req, res, next) => {
-        if (req.path.startsWith('/__gojs/bundle/') && req.path.endsWith('.bundle.js')) {
-            const allEntry = req.app.locals.configAdaptor.getConfig().entry
-            let name = req.path.replace(/^\/?__gojs\/bundle\//, '').replace(/\.bundle\.js$/, '')
-            let encodeName = ed.encode(name)
-            if (entry[encodeName] && allEntry[encodeName]) {
-                // console.log(name)
-                fn(req, res, next)
-            } else {
-                next()
-            }
-        } else {
-            next()
-        }
-    }
-}
-
 module.exports = setupWebpackMiddleware
