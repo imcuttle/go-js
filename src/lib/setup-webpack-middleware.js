@@ -6,7 +6,9 @@ const webpack = require('webpack')
 const _ = require('lodash')
 const webpackHotM = require('webpack-hot-middleware')
 const webpackDevM = require('webpack-dev-middleware')
-const npmInstall = require('npm-install-webpack-plugin')
+const npmInstall = require('./npm-install-webpack-plugin')
+const install = require('./install')
+const pkg = require('../../package.json')
 const HappyPack = require('happypack')
 const happyThreadPool = new HappyPack.ThreadPool({size: 4})
 const log = require('./log')
@@ -29,6 +31,12 @@ function setupWebpackMiddleware(app, config) {
         }),
         new webpack.HotModuleReplacementPlugin(),
         new npmInstall({
+            dev: function(module, path) {
+                log.info(`module: ${module}`)
+                // log.info(`path: ${path}`)
+                install(module, {dev: true})
+                return 'skip';
+            }
         }),
         new HappyPack({
             id: 'js',
@@ -52,11 +60,11 @@ function setupWebpackMiddleware(app, config) {
         publicPath: config.output.publicPath,
         hot: true,
         quiet: !verbose,
-        log: verbose && console.log
+        log: verbose && log.info
     })))
     app.use(maybeNot(app.locals.num, webpackHotM(compiler, {
         reload: true,
-        log: verbose && console.log
+        log: verbose && log.info
         // path: '/'
     })))
 }

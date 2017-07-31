@@ -13,7 +13,7 @@ const renderTpl = _.template(tplStr)
 
 module.exports = function (req, res, next) {
     const path = nps.join(req.app.locals.opts.path, req.path)
-    if (/^\/(__flyjs\/)|(.entry)/.test(req.path)) {
+    if (/^\/(__gojs\/)|(.entry)/.test(req.path)) {
         next()
         return
     }
@@ -24,7 +24,7 @@ module.exports = function (req, res, next) {
         let name = req.path.replace(/^\//g, '')
         let encodeName = encodeSep(name)
 
-        const entryPath = entryHandler.push(encodeName, path)
+        const entryPath = entryHandler.push(encodeName, '../' + name)
         if (configAdaptor.addEntry(encodeName, entryPath)) {
             setupWebpackMiddleware(req.app, configAdaptor.getConfig())
         }

@@ -15,7 +15,7 @@ module.exports = (err, req, res, next) => {
 
     const locals = req.app.locals
     // if (path.endsWith('.bundle.js')) {
-    //     let encodeName = path.replace(/\.bundle\.js$/, '').replace(/^\/?__flyjs\/bundle\//, '')
+    //     let encodeName = path.replace(/\.bundle\.js$/, '').replace(/^\/?__gojs\/bundle\//, '')
     //     let name = decodeSep(name)
     //     if (fs.existsSync(nps.join(locals.opts.path, name))) {
     //         // locals.entryHandler.addEntry(encodeName)
@@ -24,7 +24,7 @@ module.exports = (err, req, res, next) => {
     //         return
     //     }
     // }
-    locals.flyjs.emit('error', err)
+    locals.gojs.emit('error', err)
 
     let status = 500
     let message = err.message

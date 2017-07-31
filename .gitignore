@@ -50,3 +50,4 @@ Network Trash Folder
 Temporary Items
 .apdisk
 .happypack/
+!/src/lib/npm-install-webpack-plugin/node_modules/

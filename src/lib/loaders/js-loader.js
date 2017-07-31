@@ -12,7 +12,7 @@ module.exports = [
             cacheDirectory: true,
             presets: ['es2015', 'react', 'stage-0'],
             plugins: [
-                'react-hot-loader/babel',
+                // 'react-hot-loader/babel',
                 'transform-decorators-legacy'
             ]
         },
@@ -67,8 +67,10 @@ module.exports = [
     {
         test: /\.svg(\?.+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'
     },
+    /*
     {
         test: /\.tag$/,
         loaders: ['babel-loader']
     }
+    */
 ]

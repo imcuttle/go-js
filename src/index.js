@@ -9,15 +9,13 @@ const _ = require('lodash')
 const inherits = require('util').inherits
 const dirViewMiddleware = require('express-dirview-middleware')
 
+const preInstall = require('./lib/pre-install')
 const errorMiddleware = require('./lib/error-middleware')
 const ConfigAdaptor = require('./lib/ConfigAdaptor')
 const routes = require('./lib/routes')
 const EntryHandler = require('./lib/EntryHandler')
 
-
-
-
-function FlyJS(opts) {
+function GoJS(opts) {
     this.opts = _.merge({
         verbose: true,
         path: process.cwd(),
@@ -32,8 +30,13 @@ function FlyJS(opts) {
 }
 
 
-FlyJS.prototype._init = function () {
+GoJS.prototype._init = function () {
+
     process.chdir(this.opts.path)
+    // process.chdir(nps.join(__dirname, '..'))
+
+    // install after chdir
+    preInstall(this.opts.type)
 
     this.entryHandler = new EntryHandler(this.opts.path).init()
     this.configAdaptor = new ConfigAdaptor(this.opts.path, this.opts.type)
@@ -42,13 +45,13 @@ FlyJS.prototype._init = function () {
     this.app = express()
     this.app.locals.opts = this.opts
     this.app.locals.entryHandler = this.entryHandler
-    this.app.locals.flyjs = this
+    this.app.locals.gojs = this
     this.app.locals.configAdaptor = this.configAdaptor
 
     this.app.all('/', (req, res, next) => {
         res.sendFile(nps.join(__dirname, 'template/index.html'))
     });
-    this.app.use('/__flyjs/file-view/', dirViewMiddleware({root: this.opts.path, redirect: true}));
+    this.app.use('/__gojs/file-view/', dirViewMiddleware({root: this.opts.path, redirect: true}));
     this.app.use((req, res, next) => {
         const now = Date.now()
         req.on('finish', () => this.emit('request', req, res, now))
@@ -75,7 +78,7 @@ FlyJS.prototype._init = function () {
 }
 
 
-FlyJS.prototype.start = function (cb) {
+GoJS.prototype.start = function (cb) {
     const listenCallBack = (err) => {
         if (err) {
             cb && cb(err)
@@ -105,7 +108,7 @@ FlyJS.prototype.start = function (cb) {
     }
 }
 
-FlyJS.prototype.stop = function () {
+GoJS.prototype.stop = function () {
     if (this.running) {
         this.server.close()
         this.entryHandler.exit()
@@ -113,6 +116,6 @@ FlyJS.prototype.stop = function () {
     }
 }
 
-inherits(FlyJS, require('events').EventEmitter)
+inherits(GoJS, require('events').EventEmitter)
 
-module.exports = FlyJS
+module.exports = GoJS

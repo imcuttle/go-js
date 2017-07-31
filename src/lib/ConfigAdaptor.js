@@ -20,13 +20,13 @@ function getConfig(root, type) {
         loader.include.push(root)
         return loader
     })
-    console.log(nps.join(__dirname, '../../'))
     return {
         devtool: 'source-map',
-        context: nps.join(__dirname, '../../'),//root,
+        // context: nps.join(__dirname, '../../'),//root,
+        context: root,
         entry: {},
         output: {
-            publicPath: '/__flyjs/bundle/',
+            publicPath: '/__gojs/bundle/',
             path: nps.join(root, '/.dist/'),
 
             filename: '[name].bundle.js',
@@ -34,6 +34,19 @@ function getConfig(root, type) {
         },
         module: {
             loaders: loaders
+        },
+
+        resolve: {
+            // root: nps.join(__dirname, '../../'),
+            // fallback: nps.join(__dirname, '../../node_modules'),
+        },
+
+        resolveLoader: {
+            // modulesDirectories: [
+            //     nps.join(__dirname, '../../node_modules')
+            // ],
+            // root: nps.join(__dirname, '../../node_modules'),
+            // fallback: nps.join(__dirname, '../../node_modules'),
         },
 
         plugins: [],
@@ -57,7 +70,7 @@ function addEntry(key, abPath) {
 function fillEntry(absolute) {
     return [
         'babel-polyfill',
-        'react-hot-loader/patch',
+        // 'react-hot-loader/patch',
         'webpack-hot-middleware/client?reload=true',
         absolute
     ]

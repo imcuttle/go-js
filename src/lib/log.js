@@ -3,11 +3,11 @@
  */
 
 const bole = require('bole')
-const log = bole('fly-js')
+const log = bole('go-js')
 const garnish = require('garnish')
 let logger = garnish({
     level: 'info',
-    name: 'fly-js'
+    name: 'go-js'
 })
 logger.pipe(process.stdout)
 bole.output({

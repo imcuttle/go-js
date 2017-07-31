@@ -1,0 +1,87 @@
+{
+  "_args": [
+    [
+      "npm-install-webpack-plugin@4.0.4",
+      "/Users/yucong02/code/go-js"
+    ]
+  ],
+  "_from": "npm-install-webpack-plugin@4.0.4",
+  "_id": "npm-install-webpack-plugin@4.0.4",
+  "_inBundle": false,
+  "_integrity": "sha1-gJe6Y4OsxIwR8h5k2FVV6JTTOd0=",
+  "_location": "/npm-install-webpack-plugin",
+  "_phantomChildren": {
+    "errno": "0.1.4",
+    "readable-stream": "2.3.3"
+  },
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "npm-install-webpack-plugin@4.0.4",
+    "name": "npm-install-webpack-plugin",
+    "escapedName": "npm-install-webpack-plugin",
+    "rawSpec": "4.0.4",
+    "saveSpec": null,
+    "fetchSpec": "4.0.4"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "http://registry.npm.taobao.org/npm-install-webpack-plugin/download/npm-install-webpack-plugin-4.0.4.tgz",
+  "_spec": "4.0.4",
+  "_where": "/Users/yucong02/code/go-js",
+  "author": {
+    "name": "Eric Clemmons",
+    "email": "eric@smarterspam.com"
+  },
+  "bugs": {
+    "url": "https://github.com/ericclemmons/npm-install-webpack-plugin/issues"
+  },
+  "dependencies": {
+    "cross-spawn": "^4.0.0",
+    "memory-fs": "^0.3.0"
+  },
+  "description": "Webpack loader to automatically npm install & save dependencies.",
+  "devDependencies": {
+    "coveralls": "^2.11.8",
+    "cross-env": "^1.0.8",
+    "expect": "^1.14.0",
+    "mocha": "^2.4.5",
+    "nyc": "^6.0.0",
+    "webpack": "^1.13.0"
+  },
+  "engines": {
+    "node": ">=4.2.0"
+  },
+  "files": [
+    "src"
+  ],
+  "homepage": "https://github.com/ericclemmons/npm-install-webpack-plugin#readme",
+  "keywords": [
+    "webpack",
+    "webpack-plugin",
+    "npm",
+    "install"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "npm-install-webpack-plugin",
+  "peerDependencies": {
+    "webpack": "^1.12.0 || ^2.1.0-beta.0 || ^2.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ericclemmons/npm-install-webpack-plugin.git"
+  },
+  "scripts": {
+    "changelog": "npm run changelog:generate && npm run changelog:add",
+    "changelog:add": "git add CHANGELOG.md",
+    "changelog:generate": "github_changelog_generator --future-release $npm_package_version",
+    "coverage": "npm test && nyc report --reporter=text-lcov | coveralls",
+    "postversion": "npm run version:amend && git push origin master --tags && npm publish",
+    "test": "cross-env NODE_ENV=test nyc mocha",
+    "version": "npm run changelog",
+    "version:amend": "git commit --amend -m \"Release v${npm_package_version}\""
+  },
+  "version": "4.0.4"
+}

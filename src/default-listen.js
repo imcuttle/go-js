@@ -3,13 +3,13 @@
  */
 const log = require('./lib/log')
 
-module.exports = function (flyjs) {
-    flyjs.on('error', error => {
-        error.type = 'fly-js'
+module.exports = function (gojs) {
+    gojs.on('error', error => {
+        error.type = 'go-js'
         log.error(error)
     })
 
-    flyjs.on('server', port => {
+    gojs.on('server', port => {
         // console.log(`Server run on http://localhost:${port}`)
         log.info({
             url: `http://localhost:${port}`,
@@ -17,8 +17,8 @@ module.exports = function (flyjs) {
         })
     })
 
-    flyjs.on('request', (req, res, start) => {
-        if (req.url.startsWith('/__flyjs')) return
+    gojs.on('request', (req, res, start) => {
+        if (req.url.startsWith('/__gojs')) return
         if (req.url === 'favicon.ico' /*&& res.statusCode === 404*/) return // don't log favicon.ico 404s
 
         log.info({
@@ -29,7 +29,7 @@ module.exports = function (flyjs) {
         })
     })
 
-    flyjs.on('addEntry', entry => {
+    gojs.on('addEntry', entry => {
         log.info({
             type: 'addEntry',
             message: `addEntry: \n${JSON.stringify(entry, null, 2)}`
