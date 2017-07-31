@@ -103,9 +103,10 @@ function nextBetter(iid, fn) {
 function maybeNotBundle(entry, fn) {
     entry = _.cloneDeep(entry)
     return (req, res, next) => {
-        if (req.path.startsWith('/__gojs/bundle/') && req.path.endsWith('.bundle.js')) {
+        const path = req.path
+        if (path.startsWith('/__gojs/bundle/') && path.endsWith('.bundle.js')) {
             const allEntry = req.app.locals.configAdaptor.getConfig().entry
-            let name = req.path.replace(/^\/?__gojs\/bundle\//, '').replace(/\.bundle\.js$/, '')
+            let name = path.replace(/^\/?__gojs\/bundle\//, '').replace(/\.bundle\.js$/, '')
             let encodeName = ed.encode(name)
             if (entry[encodeName] && allEntry[encodeName]) {
                 fn(req, res, next)
