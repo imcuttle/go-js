@@ -4,9 +4,9 @@
 
 module.exports = {
     encode: function encodeSep(str) {
-        return str.replace(/\//g, '~&*@')
+        return str.replace(/\//g, '~@!')
     },
     decode: function decodeSep(str) {
-        return str.replace(/~&*@/g, '/')
+        return str.replace(/~@!/g, '/')
     }
 }

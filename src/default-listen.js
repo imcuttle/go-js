@@ -13,7 +13,7 @@ module.exports = function (gojs) {
         // console.log(`Server run on http://localhost:${port}`)
         log.info({
             url: `http://localhost:${port}`,
-            message: `run-js is listening on`
+            message: `go-js is listening on`
         })
     })
 
