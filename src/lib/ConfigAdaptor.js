@@ -6,10 +6,12 @@ const _ = require('lodash')
 const EventEmitter = require('events').EventEmitter
 const inherits = require('util').inherits
 const encodeSep = require('./encode-decode').encode
+const getPlugins = require('./get-webpack-plugins')
 
 
 
-function getConfig(root, type) {
+function getConfig(root, type, dev) {
+    if (typeof dev === 'undefined') dev = true
     let loaders = null
     if (!type || type ===  'js') {
         loaders = require('./loaders/js-loader')
@@ -21,8 +23,7 @@ function getConfig(root, type) {
         return loader
     })
     return {
-        devtool: 'source-map',
-        // context: nps.join(__dirname, '../../'),//root,
+        devtool: dev ? 'source-map' : null,
         context: root,
         entry: {},
         output: {
@@ -49,7 +50,7 @@ function getConfig(root, type) {
             // fallback: nps.join(__dirname, '../../node_modules'),
         },
 
-        plugins: [],
+        plugins: getPlugins({dev: dev}),
     }
 }
 
@@ -62,7 +63,7 @@ function addEntry(key, abPath) {
     let encodeName = encodeSep(key)
     if (!this.config.entry[encodeName]) {
         abPath = abPath || nps.join(this.root, key)
-        const entry = fillEntry(abPath)
+        const entry = fillEntry(abPath, !this.dev)
         this.config.entry[encodeName] = entry
         this.emit('addEntry', {
             [encodeName]: entry
@@ -81,7 +82,15 @@ function rmEntry(key) {
     return false
 }
 
-function fillEntry(absolute) {
+function fillEntry(absolute, prod) {
+    if (prod) {
+        return [
+            'babel-polyfill',
+            // 'react-hot-loader/patch',
+            absolute
+        ]
+    }
+
     return [
         'babel-polyfill',
         // 'react-hot-loader/patch',
@@ -90,8 +99,10 @@ function fillEntry(absolute) {
     ]
 }
 
-function ConfigAdaptor(root, type) {
-    this.config = getConfig(root, type)
+function ConfigAdaptor(root, type, isDev) {
+    if (typeof isDev === 'undefined') isDev = true
+    this.dev = isDev
+    this.config = getConfig(root, type, isDev)
     this.root = root
 }
 

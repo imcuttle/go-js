@@ -6,13 +6,10 @@ const webpack = require('webpack')
 const _ = require('lodash')
 const webpackHotM = require('webpack-hot-middleware')
 const webpackDevM = require('webpack-dev-middleware')
-const npmInstall = require('./npm-install-webpack-plugin')
-const install = require('./install')
-const pkg = require('../../package.json')
+
 const ed = require('./encode-decode')
-const HappyPack = require('happypack')
-const happyThreadPool = new HappyPack.ThreadPool({size: 4})
 const log = require('./log')
+const getPlugins = require('./get-webpack-plugins')
 
 function setupWebpackMiddleware(app, entry, config) {
     // if (app.locals.num == null) {
@@ -24,38 +21,7 @@ function setupWebpackMiddleware(app, entry, config) {
 
     config = _.cloneDeep(config)
 
-    config.plugins = ([
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': '"development"',
-            '__PRODUCTION__': false,
-            '__DEVELOPMENT__': true,
-            '__DEVTOOLS__': true
-        }),
-        new webpack.HotModuleReplacementPlugin(),
-        new npmInstall({
-            dev: function(module, path) {
-                log.info(`module: ${module}`)
-                // log.info(`path: ${path}`)
-                install(module, {dev: true})
-                return 'skip';
-            }
-        }),
-        new HappyPack({
-            id: 'js',
-            threadPool: happyThreadPool,
-            verbose: false
-        }),
-        new HappyPack({
-            id: 'less',
-            threadPool: happyThreadPool,
-            verbose: false
-        }),
-        new HappyPack({
-            id: 'css',
-            threadPool: happyThreadPool,
-            verbose: false
-        }),
-    ])
+    config.plugins = getPlugins({dev: true})
 
     const hmrPath = '/__webpack_hmr_' + (id++)
     config.entry = _.cloneDeep(entry)
