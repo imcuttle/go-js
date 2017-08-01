@@ -19,7 +19,7 @@ module.exports = function (gojs) {
 
     gojs.on('request', (req, res, start) => {
         if (req.url.startsWith('/__gojs')) return
-        if (req.url === 'favicon.ico' /*&& res.statusCode === 404*/) return // don't log favicon.ico 404s
+        if (req.path === '/favicon.ico' /*&& res.statusCode === 404*/) return // don't log favicon.ico 404s
 
         log.info({
             elapsed: Date.now() - start,

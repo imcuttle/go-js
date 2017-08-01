@@ -54,9 +54,10 @@ GoJS.prototype._init = function () {
     this.app.use('/__gojs/file-view/', dirViewMiddleware({root: this.opts.path, redirect: true}));
     this.app.use((req, res, next) => {
         const now = Date.now()
-        req.on('finish', () => this.emit('request', req, res, now))
+        res.on('finish', () => this.emit('request', req, res, now))
         next()
     })
+
     this.app.use(routes)
     this.app.use(express.static(this.opts.path))
     this.app.use(errorMiddleware)
@@ -111,12 +112,18 @@ GoJS.prototype.start = function (cb) {
     }
 }
 
-GoJS.prototype.stop = function () {
+GoJS.prototype.stop = function (cb) {
+    if (!cb) cb = () => {}
+    if (!this.running) {
+        return cb(new Error('No server currently running.'))
+    }
+
     if (this.running) {
-        this.server.close()
+        this.removeAllListeners()
         this.entryHandler.exit()
         this.watcher && this.watcher.close()
         process.chdir(this.prevCwd)
+        this.server.close(cb)
         this.running = false
     }
 }
