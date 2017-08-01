@@ -13,33 +13,16 @@ const log = require('./log')
 module.exports = function (obj = {}) {
     let dev = obj.dev == null ? true : obj.dev
 
-    let plugins = [
-        new webpack.optimize.OccurrenceOrderPlugin(),
-        new webpack.DefinePlugin({
-            'process.env.NODE_ENV': dev ? '"development"' : '"production"',
-            '__PRODUCTION__': !dev,
-            '__DEVELOPMENT__': dev,
-            '__DEVTOOLS__': dev
-        }),
-        new HappyPack({
-            id: 'js',
-            threadPool: happyThreadPool,
-            verbose: false
-        }),
-        new HappyPack({
-            id: 'less',
-            threadPool: happyThreadPool,
-            verbose: false
-        }),
-        new HappyPack({
-            id: 'css',
-            threadPool: happyThreadPool,
-            verbose: false
-        }),
-    ]
-
+    let plugins = []
     if (dev) {
-        plugins.push(
+        plugins = [
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': dev ? '"development"' : '"production"',
+                '__PRODUCTION__': !dev,
+                '__DEVELOPMENT__': dev,
+                '__DEVTOOLS__': dev
+            }),
+            new webpack.optimize.OccurrenceOrderPlugin(),
             new webpack.HotModuleReplacementPlugin(),
             new npmInstall({
                 dev: function(module, path) {
@@ -48,18 +31,62 @@ module.exports = function (obj = {}) {
                     install(module, {dev: false})
                     return 'skip';
                 }
-            })
-        )
+            }),
+            new HappyPack({
+                id: 'js',
+                threadPool: happyThreadPool,
+                verbose: false
+            }),
+            new HappyPack({
+                id: 'less',
+                threadPool: happyThreadPool,
+                verbose: false
+            }),
+            new HappyPack({
+                id: 'css',
+                threadPool: happyThreadPool,
+                verbose: false
+            }),
+        ]
     } else {
-        plugins.push(
+        plugins = [
+            new webpack.DefinePlugin({
+                'process.env.NODE_ENV': dev ? '"development"' : '"production"',
+                '__PRODUCTION__': !dev,
+                '__DEVELOPMENT__': dev,
+                '__DEVTOOLS__': dev
+            }),
+            new webpack.optimize.OccurrenceOrderPlugin(),
             new webpack.optimize.UglifyJsPlugin({
                 output: {comments: false},
                 compress: {
                     warnings: false
                 }
-            })
-        )
+            }),
+            new npmInstall({
+                dev: function(module, path) {
+                    log.info(`module: ${module}`)
+                    // log.info(`path: ${path}`)
+                    install(module, {dev: false})
+                    return 'skip';
+                }
+            }),
+            new HappyPack({
+                id: 'js',
+                threadPool: happyThreadPool,
+                verbose: false
+            }),
+            new HappyPack({
+                id: 'less',
+                threadPool: happyThreadPool,
+                verbose: false
+            }),
+            new HappyPack({
+                id: 'css',
+                threadPool: happyThreadPool,
+                verbose: false
+            }),
+        ]
     }
-
     return plugins
 }

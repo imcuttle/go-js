@@ -6,8 +6,6 @@ const _ = require('lodash')
 const EventEmitter = require('events').EventEmitter
 const inherits = require('util').inherits
 const encodeSep = require('./encode-decode').encode
-const getPlugins = require('./get-webpack-plugins')
-
 
 
 function getConfig(root, type, dev) {
@@ -50,7 +48,7 @@ function getConfig(root, type, dev) {
             // fallback: nps.join(__dirname, '../../node_modules'),
         },
 
-        plugins: getPlugins({dev: dev}),
+        plugins: [],
     }
 }
 

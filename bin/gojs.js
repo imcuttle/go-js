@@ -46,6 +46,7 @@ if (opts.build) {
     const template = require('lodash').template
     const readFileSync = require('fs').readFileSync
     const fsExtra = require('fs-extra')
+    const getPlugins = require('../src/lib/get-webpack-plugins')
     const defaultTemplatePath = nps.join(__dirname, '../src/template/build.html')
     const build = require('../src/build')
     const ed = require('../src/lib/encode-decode')
@@ -62,6 +63,7 @@ if (opts.build) {
         }
     }
 
+    config.plugins = getPlugins({dev: false})
     config.output.path = dest
     // config.context = dest
     config.module.loaders = config.module.loaders.map(loader => {
