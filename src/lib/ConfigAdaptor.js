@@ -53,6 +53,11 @@ function getConfig(root, type) {
     }
 }
 
+function clearEntry() {
+    this.config.entry = {}
+    return this
+}
+
 function addEntry(key, abPath) {
     let encodeName = encodeSep(key)
     if (!this.config.entry[encodeName]) {
@@ -62,7 +67,7 @@ function addEntry(key, abPath) {
         this.emit('addEntry', {
             [encodeName]: entry
         })
-        return encodeName
+        return entry.slice()
     }
     return false
 }
@@ -90,6 +95,7 @@ function ConfigAdaptor(root, type) {
     this.root = root
 }
 
+ConfigAdaptor.prototype.clearEntry = clearEntry
 ConfigAdaptor.prototype.addEntry = addEntry
 ConfigAdaptor.prototype.rmEntry = rmEntry
 ConfigAdaptor.prototype.getConfig = function () {

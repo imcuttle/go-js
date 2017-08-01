@@ -9,15 +9,17 @@ const webpackDevM = require('webpack-dev-middleware')
 const npmInstall = require('./npm-install-webpack-plugin')
 const install = require('./install')
 const pkg = require('../../package.json')
+const ed = require('./encode-decode')
 const HappyPack = require('happypack')
 const happyThreadPool = new HappyPack.ThreadPool({size: 4})
 const log = require('./log')
 
-function setupWebpackMiddleware(app, config) {
-    if (app.locals.num == null) {
-        app.locals.num = -1
-    }
-    app.locals.num++
+function setupWebpackMiddleware(app, entry, config) {
+    // if (app.locals.num == null) {
+    //     app.locals.num = -1
+    // }
+    // app.locals.num++
+
     const verbose = !!app.locals.opts.verbose
 
     config = _.cloneDeep(config)
@@ -55,26 +57,64 @@ function setupWebpackMiddleware(app, config) {
         }),
     ])
 
+    const hmrPath = '/__webpack_hmr_' + (id++)
+    config.entry = _.cloneDeep(entry)
+    for (let name in config.entry) {
+        if (config.entry.hasOwnProperty(name)) {
+            config.entry[name] = config.entry[name].map(x => {
+                if (x.trim().startsWith('webpack-hot-middleware')) {
+                    if (x.indexOf('?') >=0) {
+                        x += `&path=${hmrPath}`
+                    } else {
+                        x += `?path=${hmrPath}`
+                    }
+                }
+                return x
+            })
+        }
+    }
+
     const compiler = webpack(config)
-    app.use(maybeNot(app.locals.num, webpackDevM(compiler, {
+    app.use(maybeNotBundle(entry, webpackDevM(compiler, {
         publicPath: config.output.publicPath,
         hot: true,
         quiet: !verbose,
         log: verbose && log.info
     })))
-    app.use(maybeNot(app.locals.num, webpackHotM(compiler, {
-        reload: true,
-        log: verbose && log.info
-        // path: '/'
-    })))
+
+    app.use(webpackHotM(compiler, {
+        log: verbose && log.info,
+        path: hmrPath
+    }))
 }
 
-function maybeNot(num, fn) {
+let id = 0
+
+function nextBetter(iid, fn) {
     return (req, res, next) => {
-        if (req.app.locals.num === num) {
+        if (iid === id) {
             fn(req, res, next)
         } else {
             next()
+        }
+    }
+}
+
+function maybeNotBundle(entry, fn) {
+    entry = _.cloneDeep(entry)
+    return (req, res, next) => {
+        const path = req.path
+        if (path.startsWith('/__gojs/bundle/') && path.endsWith('.bundle.js')) {
+            const allEntry = req.app.locals.configAdaptor.getConfig().entry
+            let name = path.replace(/^\/?__gojs\/bundle\//, '').replace(/\.bundle\.js$/, '')
+            let encodeName = ed.encode(name)
+            if (entry[encodeName] && allEntry[encodeName]) {
+                fn(req, res, next)
+            } else {
+                next()
+            }
+        } else {
+            fn(req, res, next)
         }
     }
 }

@@ -25,8 +25,9 @@ module.exports = function (req, res, next) {
         let encodeName = encodeSep(name)
 
         const entryPath = entryHandler.push(encodeName, '../' + name)
-        if (configAdaptor.addEntry(encodeName, entryPath)) {
-            setupWebpackMiddleware(req.app, configAdaptor.getConfig())
+        let singleEntry = null
+        if (singleEntry = configAdaptor.addEntry(encodeName, entryPath)) {
+            setupWebpackMiddleware(req.app, {[encodeName]: singleEntry}, configAdaptor.getConfig())
         }
 
         res.send(renderTpl({
