@@ -12,12 +12,12 @@ function EntryHandler(root) {
     this._dir = nps.join(root, '.entry')
     this._tpl = tpl
 }
-EntryHandler.prototype.push = function (name, path) {
+EntryHandler.prototype.push = function (name, path, requires) {
     const file = nps.join(this._dir, name)
     if (fs.existsSync(file)) {
         return file
     }
-    fs.writeFileSync(file, this._tpl({path}))
+    fs.writeFileSync(file, this._tpl({path, requires}))
     return file
 }
 

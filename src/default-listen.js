@@ -25,7 +25,8 @@ module.exports = function (gojs) {
             elapsed: Date.now() - start,
             method: req.method,
             url: req.url,
-            statusCode: res.statusCode
+            statusCode: res.statusCode,
+            type: 'request',
         })
     })
 

@@ -25,14 +25,16 @@ module.exports = function (req, res, next) {
         let name = req.path.replace(/^\//g, '')
         let encodeName = encodeSep(name)
 
-        const entryPath = entryHandler.push(encodeName, '../' + name)
-        let singleEntry = null
-        if (singleEntry = configAdaptor.addEntry(encodeName, entryPath)) {
-            setupWebpackMiddleware(req.app, {[encodeName]: singleEntry}, configAdaptor.getConfig())
+        function addEntry(entryPath) {
+            let singleEntry = null
+            if (singleEntry = configAdaptor.addEntry(encodeName, entryPath)) {
+                setupWebpackMiddleware(req.app, {[encodeName]: singleEntry}, configAdaptor.getConfig())
+            }
         }
 
-        const patternHtmlPath = path.replace(/\.[^\.]*/, '.html')
+        const patternHtmlPath = path.replace(/\.[^\.]*$/, '.html')
         if (fs.existsSync(patternHtmlPath)) {
+            addEntry(entryHandler.push(encodeName, '../' + name, ['../' + name.replace(/\.[^\.]*$/, '.html')]))
             fs.readFile(patternHtmlPath, 'utf-8', (err, data) => {
                 if (err) next(err)
                 else {
@@ -42,6 +44,7 @@ module.exports = function (req, res, next) {
                 }
             })
         } else {
+            addEntry(entryHandler.push(encodeName, '../' + name))
             res.send(renderTpl({
                 name,
                 encodeName
