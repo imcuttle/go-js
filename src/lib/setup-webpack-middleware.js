@@ -107,8 +107,11 @@ function nextBetter(iid, fn) {
 }
 
 function maybeNotBundle(entry, fn) {
-    entry = _.cloneDeep(entry)
-    return (req, res, next) => {
+    // entry = _.cloneDeep(entry)
+
+    // entry is unique，don't need to filter request by self
+    return fn
+    /*return (req, res, next) => {
         const path = req.path
         if (path.startsWith('/__gojs/bundle/') && path.endsWith('.bundle.js')) {
             const allEntry = req.app.locals.configAdaptor.getConfig().entry
@@ -122,7 +125,7 @@ function maybeNotBundle(entry, fn) {
         } else {
             fn(req, res, next)
         }
-    }
+    }*/
 }
 
 module.exports = setupWebpackMiddleware

@@ -14,16 +14,6 @@ module.exports = (err, req, res, next) => {
     const path = req.path
 
     const locals = req.app.locals
-    // if (path.endsWith('.bundle.js')) {
-    //     let encodeName = path.replace(/\.bundle\.js$/, '').replace(/^\/?__gojs\/bundle\//, '')
-    //     let name = decodeSep(name)
-    //     if (fs.existsSync(nps.join(locals.opts.path, name))) {
-    //         // locals.entryHandler.addEntry(encodeName)
-    //         // setupWebpackMiddleware(app, locals.entryHandler.getConfig())
-    //         next()
-    //         return
-    //     }
-    // }
     locals.gojs.emit('error', err)
 
     let status = 500

@@ -4,6 +4,7 @@
 const nps = require('path')
 const _ = require('lodash')
 const fs = require('fs')
+const cheerio = require('cheerio')
 
 const setupWebpackMiddleware = require('../setup-webpack-middleware')
 const encodeSep = require('../encode-decode').encode
@@ -30,12 +31,25 @@ module.exports = function (req, res, next) {
             setupWebpackMiddleware(req.app, {[encodeName]: singleEntry}, configAdaptor.getConfig())
         }
 
-        res.send(renderTpl({
-            name,
-            encodeName
-        }))
+        const patternHtmlPath = path.replace(/\.[^\.]*/, '.html')
+        if (fs.existsSync(patternHtmlPath)) {
+            fs.readFile(patternHtmlPath, 'utf-8', (err, data) => {
+                if (err) next(err)
+                else {
+                    let $ = cheerio.load(data, {decodeEntities: false})
+                    $('body').append(`<script src="/__gojs/bundle/${encodeName}.bundle.js"></script>`)
+                    res.send($.html())
+                }
+            })
+        } else {
+            res.send(renderTpl({
+                name,
+                encodeName
+            }))
+        }
     } else {
-        next(new Error(`File not found: ${path}`))
-        // next()
+        const err = new Error(`File not found: ${path}`)
+        err.code = 'ENOENT'
+        next(err)
     }
 }
