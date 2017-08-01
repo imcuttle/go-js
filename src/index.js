@@ -8,6 +8,7 @@ const chokidar = require('chokidar')
 const _ = require('lodash')
 const inherits = require('util').inherits
 const dirViewMiddleware = require('express-dirview-middleware')
+const setWebpackMiddleware = require('./lib/setup-webpack-middleware')
 
 const preInstall = require('./lib/pre-install')
 const errorMiddleware = require('./lib/error-middleware')
@@ -62,19 +63,22 @@ GoJS.prototype._init = function () {
     this.app.use(errorMiddleware)
 
 
-    // this.watcher = chokidar.watch(root, {
-    //     ignoreInitial: true,
-    //     ignoreCase: /node_modules|\.git|^\..+|[\/\\]\..+/
-    // })
-    //
-    // this.watcher.on('add', fp => {
-    //     fp = fp.substring(root.length).replace(/^\//g, '')
-    //     if (/jsx?$/.test(fp) && !/(node_modules)/.test(fp) && !/^\./.test(fp)) {
-    //         console.log('add fp ->', fp)
-    //         config.entry[encodeSep(fp)] = fillEntry(nps.join(root, fp))
-    //         setupWebpackMiddleware(app, config)
-    //     }
-    // })
+    this.watcher = chokidar.watch(this.opts.path, {
+        ignoreInitial: true,
+        ignoreCase: /node_modules|\.git|^\..+|[\/\\]\..+/
+    })
+    this.watcher.on('unlink', fp => {
+        fp = fp.substring(this.opts.path.length).replace(/^\//g, '')
+        if (/jsx?$/.test(fp) && !/(node_modules)/.test(fp) && !/^\./.test(fp)) {
+            this.emit('watch', 'unlink', fp)
+
+            if (this.configAdaptor.rmEntry(fp)) {
+                this.emit('rmEntry', fp)
+
+                setWebpackMiddleware(this.app, this.configAdaptor.getConfig())
+            }
+        }
+    })
 }
 
 
@@ -112,6 +116,7 @@ GoJS.prototype.stop = function () {
     if (this.running) {
         this.server.close()
         this.entryHandler.exit()
+        this.watcher && this.watcher.close()
         this.running = false
     }
 }

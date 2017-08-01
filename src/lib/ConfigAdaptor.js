@@ -67,6 +67,15 @@ function addEntry(key, abPath) {
     return false
 }
 
+function rmEntry(key) {
+    let encodeName = encodeSep(key)
+    if (this.config.entry[encodeName]) {
+        delete this.config.entry[encodeName]
+        return true
+    }
+    return false
+}
+
 function fillEntry(absolute) {
     return [
         'babel-polyfill',
@@ -82,6 +91,7 @@ function ConfigAdaptor(root, type) {
 }
 
 ConfigAdaptor.prototype.addEntry = addEntry
+ConfigAdaptor.prototype.rmEntry = rmEntry
 ConfigAdaptor.prototype.getConfig = function () {
     return this.config
 }

@@ -31,8 +31,22 @@ module.exports = function (gojs) {
 
     gojs.on('addEntry', entry => {
         log.info({
-            type: 'addEntry',
+            type: 'entry',
             message: `addEntry: \n${JSON.stringify(entry, null, 2)}`
+        })
+    })
+
+    gojs.on('rmEntry', entry => {
+        log.info({
+            type: 'entry',
+            message: `rmEntry: ${entry}`
+        })
+    })
+
+    gojs.on('watch', (type, filePath) => {
+        log.info({
+            type: 'watch',
+            message: `${filePath} has been changed (${type})`
         })
     })
 }
