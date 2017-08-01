@@ -43,17 +43,17 @@ function setupWebpackMiddleware(app, entry, config) {
         new HappyPack({
             id: 'js',
             threadPool: happyThreadPool,
-            verbose
+            verbose: false
         }),
         new HappyPack({
             id: 'less',
             threadPool: happyThreadPool,
-            verbose
+            verbose: false
         }),
         new HappyPack({
             id: 'css',
             threadPool: happyThreadPool,
-            verbose
+            verbose: false
         }),
     ])
 
@@ -76,6 +76,12 @@ function setupWebpackMiddleware(app, entry, config) {
 
     const compiler = webpack(config)
     app.use(maybeNotBundle(entry, webpackDevM(compiler, {
+        noInfo: !verbose,
+        stats: {
+            chunks: false,
+            hash: false,
+            colors: {level: 2, hasBasic: true, has256: true, has16m: false}
+        },
         publicPath: config.output.publicPath,
         hot: true,
         quiet: !verbose,

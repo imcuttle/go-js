@@ -6,7 +6,7 @@ const log = require('./lib/log')
 module.exports = function (gojs) {
     gojs.on('error', error => {
         error.type = 'go-js'
-        log.error(error)
+        log.error(error.message)
     })
 
     gojs.on('server', port => {

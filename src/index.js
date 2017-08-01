@@ -9,7 +9,6 @@ const _ = require('lodash')
 const inherits = require('util').inherits
 const dirViewMiddleware = require('express-dirview-middleware')
 const setWebpackMiddleware = require('./lib/setup-webpack-middleware')
-
 const preInstall = require('./lib/pre-install')
 const errorMiddleware = require('./lib/error-middleware')
 const ConfigAdaptor = require('./lib/ConfigAdaptor')
@@ -32,7 +31,7 @@ function GoJS(opts) {
 
 
 GoJS.prototype._init = function () {
-
+    this.prevCwd = process.cwd()
     process.chdir(this.opts.path)
     // process.chdir(nps.join(__dirname, '..'))
 
@@ -75,7 +74,7 @@ GoJS.prototype._init = function () {
             if (this.configAdaptor.rmEntry(fp)) {
                 this.emit('rmEntry', fp)
 
-                setWebpackMiddleware(this.app, this.configAdaptor.getConfig())
+                // setWebpackMiddleware(this.app, this.configAdaptor.getConfig())
             }
         }
     })
@@ -117,6 +116,7 @@ GoJS.prototype.stop = function () {
         this.server.close()
         this.entryHandler.exit()
         this.watcher && this.watcher.close()
+        process.chdir(this.prevCwd)
         this.running = false
     }
 }

@@ -36,5 +36,6 @@ module.exports = function (req, res, next) {
         }))
     } else {
         next(new Error(`File not found: ${path}`))
+        // next()
     }
 }
