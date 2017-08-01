@@ -32,5 +32,5 @@ gojs -h
 
 ## Todo
 
-- [] 添加上对 TypeScript 的支持（CoffeeScript先放放）
+- [ ] 添加上对 TypeScript 的支持（CoffeeScript先放放）
 
