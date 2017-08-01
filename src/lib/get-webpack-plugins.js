@@ -28,9 +28,31 @@ module.exports = function (obj = {}) {
                 dev: function(module, path) {
                     log.info(`module: ${module}`)
                     // log.info(`path: ${path}`)
-                    install(module, {dev: false})
+                    install(module, {dev: true})
                     return 'skip';
                 }
+            }),
+
+
+            new HappyPack({
+                id: 'useable-css',
+                threadPool: happyThreadPool,
+                verbose: false
+            }),
+            new HappyPack({
+                id: 'mod-css',
+                threadPool: happyThreadPool,
+                verbose: false
+            }),
+            new HappyPack({
+                id: 'useable-less',
+                threadPool: happyThreadPool,
+                verbose: false
+            }),
+            new HappyPack({
+                id: 'mod-less',
+                threadPool: happyThreadPool,
+                verbose: false
             }),
             new HappyPack({
                 id: 'js',
@@ -70,6 +92,27 @@ module.exports = function (obj = {}) {
                     install(module, {dev: false})
                     return 'skip';
                 }
+            }),
+
+            new HappyPack({
+                id: 'useable-css',
+                threadPool: happyThreadPool,
+                verbose: false
+            }),
+            new HappyPack({
+                id: 'mod-css',
+                threadPool: happyThreadPool,
+                verbose: false
+            }),
+            new HappyPack({
+                id: 'useable-less',
+                threadPool: happyThreadPool,
+                verbose: false
+            }),
+            new HappyPack({
+                id: 'mod-less',
+                threadPool: happyThreadPool,
+                verbose: false
             }),
             new HappyPack({
                 id: 'js',

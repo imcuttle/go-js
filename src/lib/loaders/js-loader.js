@@ -21,6 +21,10 @@ module.exports = [
 
     {
         test: /\.css$/,
+        exclude: [
+            /\.mod\.css/,
+            /\.use(able)?\.css/,
+        ],
         loaders: [
             'style-loader',
             'css-loader?localIdentName=[path][name]__[local]___[hash:base64:5]',
@@ -30,7 +34,32 @@ module.exports = [
     },
 
     {
+        test: /\.use(able)?\.css$/,
+        loaders: [
+            'style-loader/useable',
+            'css-loader?localIdentName=[path][name]__[local]___[hash:base64:5]',
+            'autoprefixer?browsers=last 2 version&remove=false'
+        ],
+        happy: {id: 'useable-css'}
+    },
+
+    {
+        test: /\.mod\.css$/,
+        loaders: [
+            'style-loader',
+            'css-loader?modules&localIdentName=[path][name]__[local]___[hash:base64:5]',
+            'autoprefixer?browsers=last 2 version&remove=false'
+        ],
+        happy: {id: 'mod-css'}
+    },
+
+    // .less, .mod.less, .useable.less
+    {
         test: /\.less$/,
+        exclude: [
+            /\.mod\.less$/,
+            /\.use(able)?\.less$/,
+        ],
         loaders: [
             'style-loader',
             'css-loader?localIdentName=[path][name]__[local]___[hash:base64:5]',
@@ -38,6 +67,28 @@ module.exports = [
             'less-loader'
         ],
         happy: {id: 'less'}
+    },
+
+    {
+        test: /\.use(able)?\.less$/,
+        loaders: [
+            'style-loader/useable',
+            'css-loader?localIdentName=[path][name]__[local]___[hash:base64:5]',
+            'autoprefixer?browsers=last 2 version&remove=false',
+            'less-loader'
+        ],
+        happy: {id: 'useable-less'}
+    },
+
+    {
+        test: /\.mod\.less$/,
+        loaders: [
+            'style-loader',
+            'css-loader?modules&localIdentName=[path][name]__[local]___[hash:base64:5]',
+            'autoprefixer?browsers=last 2 version&remove=false',
+            'less-loader'
+        ],
+        happy: {id: 'mod-less'}
     },
 
     // 其他资源
