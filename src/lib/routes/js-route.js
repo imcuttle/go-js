@@ -14,7 +14,7 @@ const renderTpl = _.template(tplStr)
 
 module.exports = function (req, res, next) {
     const path = nps.join(req.app.locals.opts.path, req.path)
-    if (/^\/(__gojs\/)|(.entry)|(.dist)/.test(req.path)) {
+    if (/^\/(__gojs\/)|(.entry)|(.dist)/.test(req.path) || /\.jsx?\.bundle\.jsx?$/.test(req.path)) {
         next()
         return
     }
