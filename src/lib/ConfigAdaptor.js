@@ -41,14 +41,11 @@ function getConfig(root, type, dev) {
         },
 
         resolve: {
-            root: nps.join(projPath),
-            // root: nps.join(root),
+            // root: nps.join(projPath),
+            root: nps.join(root),
         },
 
         resolveLoader: {
-            modulesDirectories: [
-                nps.join(projPath, 'node_modules')
-            ],
             root: nps.join(projPath),
             // root: nps.join(root),
         },
