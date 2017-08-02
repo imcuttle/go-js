@@ -42,10 +42,11 @@ function getConfig(root, type, dev) {
 
         resolveLoader: {
             // modulesDirectories: [
-            //     nps.join(__dirname, '../../node_modules')
+            //     '/Users/moyu/my-code/FECode/react-mchart/node_modules',
+            //     // nps.join(__dirname, '../../node_modules')
             // ],
-            // root: nps.join(__dirname, '../../node_modules'),
-            // fallback: nps.join(__dirname, '../../node_modules'),
+            root: nps.join(__dirname, '../../node_modules'),
+            // root: '/Users/moyu/my-code/FECode/react-mchart/node_modules',
         },
 
         plugins: [],
