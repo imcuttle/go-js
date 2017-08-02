@@ -46,7 +46,7 @@
     "minimist": "^1.2.0",
     "npm-install-webpack-plugin": "^4.0.4",
     "opn": "^5.1.0",
-    "webpack": "1.13.2",
+    "webpack": "^1.15.0",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-hot-middleware": "^2.18.2"
   },
