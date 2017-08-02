@@ -91,8 +91,13 @@ GoJS.prototype.start = function (cb) {
             this.running = true
             cb && cb(null, this.opts.port)
             this.emit('server', this.opts.port)
+
             if (this.opts.openSync) {
-                require('opn')(`http://localhost:${this.opts.port}`)
+                let path = this.opts.initPath || ''
+                path = path.replace(/^\/*/, '')
+
+                require('opn')(`http://localhost:${this.opts.port}/${path}`)
+
             }
         }
     }

@@ -13,7 +13,8 @@ const opts = {
     path: argv._.length > 0 ? argv._[0] : process.cwd(),
     type: argv.type || argv.t || 'js',
     build: argv.build || argv.b,
-    buildCopyPath: argv.buildcopy
+    buildCopyPath: argv.buildcopy,
+    initPath: argv.i || argv.init
 }
 
 opts.path = nps.resolve(opts.path)
@@ -32,6 +33,7 @@ if (opts.help) {
     console.log('  -t --type                   set type (only support `js` now, and will add `ts/coffee` in the future)');
     console.log('  -b --build                  set entry for build.');
     console.log('  --buildcopy                 set copy file or directory for build.');
+    console.log('  -i --init [path]            open path automatically when server start. (not work when `--noopen`)');
     console.log('');
     process.exit(0)
 }
