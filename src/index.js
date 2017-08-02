@@ -4,6 +4,7 @@
 const express = require('express')
 const getPort = require('get-port')
 const nps = require('path')
+const fs = require('fs')
 const chokidar = require('chokidar')
 const _ = require('lodash')
 const inherits = require('util').inherits
@@ -14,6 +15,8 @@ const errorMiddleware = require('./lib/error-middleware')
 const ConfigAdaptor = require('./lib/ConfigAdaptor')
 const routes = require('./lib/routes')
 const EntryHandler = require('./lib/EntryHandler')
+
+const indexTpl = _.template(fs.readFileSync(nps.join(__dirname, 'template/index.html'), 'utf-8'))
 
 function GoJS(opts) {
     this.opts = _.merge({
@@ -48,8 +51,14 @@ GoJS.prototype._init = function () {
     this.app.locals.gojs = this
     this.app.locals.configAdaptor = this.configAdaptor
 
+
+
     this.app.all('/', (req, res, next) => {
-        res.sendFile(nps.join(__dirname, 'template/index.html'))
+        const html = indexTpl({
+            version: require('../package.json').version
+        })
+
+        res.send(html)
     });
     this.app.use('/__gojs/file-view/', dirViewMiddleware({root: this.opts.path, redirect: true}));
     this.app.use((req, res, next) => {
