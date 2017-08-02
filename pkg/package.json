@@ -1,0 +1,25 @@
+{
+  "name": "go-js",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "moyuyc",
+  "license": "MIT",
+  "devDependencies": {},
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "autoprefixer": "^7.1.2",
+    "autoprefixer-loader": "^3.2.0",
+    "babel-core": "^6.18.2",
+    "babel-loader": "^7.1.1",
+    "babel-polyfill": "^6.23.0",
+    "css-loader": "^0.28.4",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.5",
+    "style-loader": "^0.18.2"
+  }
+}

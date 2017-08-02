@@ -20,9 +20,14 @@ function getConfig(root, type, dev) {
         loader.include.push(root)
         return loader
     })
+
+    const projPath = nps.join(__dirname, '../../pkg')
+    // const projPath = root
+
     return {
         devtool: dev ? 'source-map' : null,
-        context: root,
+        context: projPath,
+        // context: root,
         entry: {},
         output: {
             publicPath: '/__gojs/bundle/',
@@ -36,17 +41,16 @@ function getConfig(root, type, dev) {
         },
 
         resolve: {
-            // root: nps.join(__dirname, '../../'),
-            // fallback: nps.join(__dirname, '../../node_modules'),
+            root: nps.join(projPath),
+            // root: nps.join(root),
         },
 
         resolveLoader: {
-            // modulesDirectories: [
-            //     '/Users/moyu/my-code/FECode/react-mchart/node_modules',
-            //     // nps.join(__dirname, '../../node_modules')
-            // ],
-            root: nps.join(__dirname, '../../node_modules'),
-            // root: '/Users/moyu/my-code/FECode/react-mchart/node_modules',
+            modulesDirectories: [
+                nps.join(projPath, 'node_modules')
+            ],
+            root: nps.join(projPath),
+            // root: nps.join(root),
         },
 
         plugins: [],
