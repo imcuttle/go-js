@@ -1,11 +1,11 @@
 {
   "name": "go-js",
-  "version": "1.1.5",
+  "version": "1.1.7",
   "description": "future frontend javascript server",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "cd pkg && npm install"
+    "postinstall": "npm config set unsafe-perm=true; cd pkg && npm install"
   },
   "bin": {
     "gojs": "bin/gojs.js"
