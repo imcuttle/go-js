@@ -1,6 +1,6 @@
 {
   "name": "go-js",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "future frontend javascript server",
   "main": "src/index.js",
   "scripts": {
