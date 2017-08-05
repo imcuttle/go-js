@@ -1,11 +1,10 @@
 {
   "name": "go-js",
-  "version": "1.1.6",
+  "version": "1.2.1",
   "description": "future frontend javascript server",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "cd pkg && npm install"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
     "gojs": "bin/gojs.js"
@@ -49,6 +48,17 @@
     "webpack": "1.13.2",
     "webpack-dev-middleware": "^1.11.0",
     "webpack-hot-middleware": "^2.18.2"
+  },
+  "optionalDependencies": {
+    "autoprefixer": "^7.1.2",
+    "autoprefixer-loader": "^3.2.0",
+    "babel-core": "^6.18.2",
+    "babel-loader": "^7.1.1",
+    "babel-polyfill": "^6.23.0",
+    "css-loader": "^0.28.4",
+    "less": "^2.7.2",
+    "less-loader": "^4.0.5",
+    "style-loader": "^0.18.2"
   },
   "devDependencies": {},
   "directories": {

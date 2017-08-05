@@ -21,7 +21,7 @@ function getConfig(root, type, dev) {
         return loader
     })
 
-    const projPath = nps.join(__dirname, '../../pkg')
+    const projPath = nps.join(__dirname, '../..')
     // const projPath = root
 
     return {

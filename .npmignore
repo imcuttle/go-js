@@ -3,3 +3,4 @@ test/
 .idea/
 .entry/
 !/src/lib/npm-install-webpack-plugin/node_modules/
+package-lock.json
