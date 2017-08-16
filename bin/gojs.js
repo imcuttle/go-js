@@ -65,7 +65,7 @@ if (opts.build) {
         }
     }
 
-    config.plugins = getPlugins({dev: false})
+    config.plugins = getPlugins({dev: false, config})
     config.output.path = dest
     // config.context = dest
     config.module.loaders = config.module.loaders.map(loader => {

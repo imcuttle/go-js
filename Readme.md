@@ -34,3 +34,7 @@ gojs -h
 
 - [ ] 添加上对 TypeScript 的支持（CoffeeScript先放放）
 
+## ChangeLog
+
+- v1.2.4
+    - 添加custom loader支持(gojs.jsloader.js)

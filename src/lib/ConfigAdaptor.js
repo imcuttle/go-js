@@ -5,6 +5,7 @@ const nps = require('path')
 const _ = require('lodash')
 const EventEmitter = require('events').EventEmitter
 const inherits = require('util').inherits
+const log = require('./log')
 const encodeSep = require('./encode-decode').encode
 
 
@@ -12,7 +13,13 @@ function getConfig(root, type, dev) {
     if (typeof dev === 'undefined') dev = true
     let loaders = null
     if (!type || type ===  'js') {
-        loaders = require('./loaders/js-loader')
+        try {
+            loaders = require(nps.join(root, 'gojs.jsloader.js'))
+            log.info('custom js loader worked. ' + nps.join(root, 'gojs.jsloader.js'))
+        } catch (e) {
+            loaders = require('./loaders/js-loader')
+        }
+
     }
 
     loaders = loaders.map(loader => {

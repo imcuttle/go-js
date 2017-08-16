@@ -51,3 +51,4 @@ Temporary Items
 .apdisk
 .happypack/
 !/src/lib/npm-install-webpack-plugin/node_modules/
+!/src/lib/ConfigAdaptor.js

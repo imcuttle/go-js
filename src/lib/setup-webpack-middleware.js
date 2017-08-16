@@ -21,7 +21,7 @@ function setupWebpackMiddleware(app, entry, config) {
 
     config = _.cloneDeep(config)
 
-    config.plugins = getPlugins({dev: true})
+    config.plugins = getPlugins({dev: true, config})
 
     const hmrPath = '/__webpack_hmr_' + (id++)
     config.entry = _.cloneDeep(entry)

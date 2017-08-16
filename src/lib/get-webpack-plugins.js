@@ -12,6 +12,7 @@ const log = require('./log')
 
 module.exports = function (obj = {}) {
     let dev = obj.dev == null ? true : obj.dev
+    let config = 'config' in obj ? obj.config : null
 
     let plugins = []
     if (dev) {
@@ -33,42 +34,6 @@ module.exports = function (obj = {}) {
                 }
             }),
 
-
-            new HappyPack({
-                id: 'useable-css',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
-            new HappyPack({
-                id: 'mod-css',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
-            new HappyPack({
-                id: 'useable-less',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
-            new HappyPack({
-                id: 'mod-less',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
-            new HappyPack({
-                id: 'js',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
-            new HappyPack({
-                id: 'less',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
-            new HappyPack({
-                id: 'css',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
         ]
     } else {
         plugins = [
@@ -94,42 +59,23 @@ module.exports = function (obj = {}) {
                 }
             }),
 
-            new HappyPack({
-                id: 'useable-css',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
-            new HappyPack({
-                id: 'mod-css',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
-            new HappyPack({
-                id: 'useable-less',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
-            new HappyPack({
-                id: 'mod-less',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
-            new HappyPack({
-                id: 'js',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
-            new HappyPack({
-                id: 'less',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
-            new HappyPack({
-                id: 'css',
-                threadPool: happyThreadPool,
-                verbose: false
-            }),
         ]
     }
+
+    if (config && config.module && config.module.loaders) {
+        let loaders = config.module.loaders
+        let happyIds = loaders.filter(x => !!x.happy && !!x.happy.id).map(x => x.happy.id)
+        // console.log('happyIds', happyIds)
+        happyIds.forEach(function (id) {
+            plugins = plugins.concat(
+                new HappyPack({
+                    id: id,
+                    threadPool: happyThreadPool,
+                    verbose: false
+                })
+            )
+        })
+    }
+
     return plugins
 }
