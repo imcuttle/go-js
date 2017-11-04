@@ -1,6 +1,6 @@
 {
   "name": "go-js",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "future frontend javascript server",
   "main": "src/index.js",
   "scripts": {
@@ -12,9 +12,7 @@
   "keywords": [],
   "author": "moyuyc",
   "license": "MIT",
-  "baseDependencies": {
-    
-  },
+  "baseDependencies": {},
   "dependencies": {
     "babel-core": "6.18.2",
     "babel-loader": "^7.1.1",
