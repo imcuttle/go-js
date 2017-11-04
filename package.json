@@ -13,6 +13,9 @@
   "author": "moyuyc",
   "license": "MIT",
   "baseDependencies": {
+    
+  },
+  "dependencies": {
     "babel-core": "6.18.2",
     "babel-loader": "^7.1.1",
     "babel-polyfill": "6.16.0",
@@ -30,9 +33,7 @@
     "css-loader": "^0.28.4",
     "autoprefixer": "^7.1.2",
     "autoprefixer-loader": "^3.2.0",
-    "file-loader": "^0.11.2"
-  },
-  "dependencies": {
+    "file-loader": "^0.11.2",
     "bole": "^3.0.2",
     "cheerio": "^1.0.0-rc.2",
     "express": "^4.15.3",
