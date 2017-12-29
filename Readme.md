@@ -1,4 +1,6 @@
 # go-js
+[![NPM version](https://img.shields.io/npm/v/go-js.svg?style=flat-square)](https://www.npmjs.com/package/go-js)
+[![NPM Downloads](https://img.shields.io/npm/dm/go-js.svg?style=flat-square&maxAge=43200)](https://www.npmjs.com/package/go-js)
 
 **Setup frontend webpack server quickly**
 
@@ -38,3 +40,5 @@ gojs -h
 
 - v1.2.4
     - 添加custom loader支持(gojs.jsloader.js)
+- v1.3.0
+    - 支持全局依赖的使用 (对用户不可见)
