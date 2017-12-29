@@ -46,18 +46,19 @@ NpmInstallPlugin.prototype.apply = function(compiler) {
     compiler.options.externals.unshift(this.resolveExternal.bind(this));
   }
 
-  // Install loaders on demand
-  compiler.resolvers.loader.plugin("module", this.resolveLoader.bind(this));
+  compiler.plugin("after-resolvers", function(compiler) {
+    // Install loaders on demand
+    compiler.resolvers.loader.plugin("module", this.resolveLoader.bind(this));
 
-  // Install project dependencies on demand
-  compiler.resolvers.normal.plugin("module", this.resolveModule.bind(this));
+    // Install project dependencies on demand
+    compiler.resolvers.normal.plugin("module", this.resolveModule.bind(this));
+  }.bind(this))
 };
 
 NpmInstallPlugin.prototype.install = function(result) {
   if (!result) {
     return;
   }
-
   var dep = installer.check(result.request);
 
   if (dep) {
@@ -126,20 +127,20 @@ NpmInstallPlugin.prototype.resolveExternal = function(context, request, callback
   }.bind(this));
 };
 
-NpmInstallPlugin.prototype.resolve = function(result, callback) {
+NpmInstallPlugin.prototype.resolve = function(resolver, result, callback) {
   var version = require("webpack/package.json").version;
   var major = version.split(".").shift();
 
   if (major === "1") {
-    return this.compiler.resolvers.normal.resolve(
+    return this.compiler.resolvers[resolver].resolve(
       result.path,
       result.request,
       callback
     );
   }
 
-  if (major === "2") {
-    return this.compiler.resolvers.normal.resolve(
+  if (major === "2" || major === "3") {
+    return this.compiler.resolvers[resolver].resolve(
       result.context || {},
       result.path,
       result.request,
@@ -147,24 +148,34 @@ NpmInstallPlugin.prototype.resolve = function(result, callback) {
     );
   }
 
+
   throw new Error("Unsupport Webpack version: " + version);
 }
 
 NpmInstallPlugin.prototype.resolveLoader = function(result, next) {
-  // Ensure loaders end with `-loader` (e.g. `babel` => `babel-loader`)
-  // Also force Webpack2's duplication of `-loader` to a single occurrence
-  var loader = result.request // e.g. react-hot-loader/webpack
-      .split("/")             // ["react-hot-loader", "webpack"]
-      .shift()                // "react-hot-loader"
-      .split("-loader")       // ["react-hot", ""]
-      .shift()                // "react-hot"
-      .concat("-loader")       // "react-hot-loader"
-  ;
+  // Only install direct dependencies, not sub-dependencies
+  if (result.path.match("node_modules")) {
+    return next();
+  }
 
-  this.install(Object.assign({}, result, { request: loader }));
+  if (this.resolving[result.request]) {
+    return next();
+  }
 
-  return next();
+  this.resolving[result.request] = true;
+
+  this.resolve("loader", result, function(err, filepath) {
+    this.resolving[result.request] = false;
+
+    if (err) {
+      var loader = utils.normalizeLoader(result.request);
+      this.install(Object.assign({}, result, { request: loader }));
+    }
+
+    return next();
+  }.bind(this));
 };
+
 
 NpmInstallPlugin.prototype.resolveModule = function(result, next) {
   // Only install direct dependencies, not sub-dependencies
@@ -178,7 +189,7 @@ NpmInstallPlugin.prototype.resolveModule = function(result, next) {
 
   this.resolving[result.request] = true;
 
-  this.resolve(result, function(err, filepath) {
+  this.resolve('normal', result, function(err, filepath) {
     this.resolving[result.request] = false;
 
     if (err) {

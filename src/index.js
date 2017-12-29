@@ -1,6 +1,10 @@
 /**
  * Created by moyu on 2017/7/30.
  */
+const req = require('./lib/require')
+req.unover()
+req.over()
+
 const express = require('express')
 const getPort = require('get-port')
 const nps = require('path')
@@ -25,6 +29,9 @@ function GoJS(opts) {
     if (this.opts.path) {
         this.opts.path = nps.resolve(this.opts.path)
     }
+
+    req.unover()
+    req.over([this.opts.path])
 
     this._init()
 }
@@ -130,6 +137,7 @@ GoJS.prototype.stop = function (cb) {
         process.chdir(this.prevCwd)
         this.server.close(cb)
         this.running = false
+
     }
 }
 

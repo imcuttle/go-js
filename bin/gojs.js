@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 let argv = require('minimist')(process.argv.slice(2));
-const log = require('../src/lib/log')
+const log = require('../dist/lib/log')
 const nps = require('path')
 
 const opts = {
@@ -48,11 +48,11 @@ if (opts.build) {
     const template = require('lodash').template
     const readFileSync = require('fs').readFileSync
     const fsExtra = require('fs-extra')
-    const getPlugins = require('../src/lib/get-webpack-plugins')
-    const defaultTemplatePath = nps.join(__dirname, '../src/template/build.html')
-    const build = require('../src/build')
-    const ed = require('../src/lib/encode-decode')
-    const ConfigAdaptor = require('../src/lib/ConfigAdaptor')
+    const getPlugins = require('../dist/lib/get-webpack-plugins')
+    const defaultTemplatePath = nps.join(__dirname, '../dist/template/build.html')
+    const build = require('../dist/build')
+    const ed = require('../dist/lib/encode-decode')
+    const ConfigAdaptor = require('../dist/lib/ConfigAdaptor')
     const dest = nps.join(opts.path, '.dist')
     const adaptor = new ConfigAdaptor(opts.path, opts.type, false)
     adaptor.addEntry(opts.build)
@@ -98,8 +98,8 @@ if (opts.build) {
     }
 
 } else {
-    const GoJS = require('../src')
-    const listen = require('../src/default-listen')
+    const GoJS = require('../dist')
+    const listen = require('../dist/default-listen')
     const gojs = new GoJS(opts)
     listen(gojs)
 

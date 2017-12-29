@@ -167,6 +167,10 @@ module.exports.install = function install(deps, options) {
     stdio: ["ignore", "pipe", "inherit"]
   });
 
+  if (output.stdout) {
+    console.log(output.stdout.toString())
+  }
+
   if (output.status) {
     deps.forEach(function(dep) {
       erroneous.push(dep);

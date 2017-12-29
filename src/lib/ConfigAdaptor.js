@@ -8,6 +8,19 @@ const inherits = require('util').inherits
 const log = require('./log')
 const encodeSep = require('./encode-decode').encode
 
+const emptyBuildins = [
+  'child_process',
+  'cluster',
+  'dgram',
+  'dns',
+  'fs',
+  'module',
+  'net',
+  'readline',
+  'repl',
+  'tls'
+]
+
 
 function getConfig(root, type, dev) {
     if (typeof dev === 'undefined') dev = true
@@ -30,7 +43,6 @@ function getConfig(root, type, dev) {
 
     const projPath = nps.join(__dirname, '../..')
     // const projPath = root
-
     return {
         devtool: dev ? 'source-map' : null,
         context: projPath,
@@ -46,14 +58,25 @@ function getConfig(root, type, dev) {
         module: {
             loaders: loaders
         },
+        cache: true,
+        node: emptyBuildins.reduce(function (collection, key) {
+          collection[key] = 'empty'
+          return collection
+        }, {}),
 
         resolve: {
             // root: nps.join(projPath),
-            root: nps.join(root),
+            root: [
+              nps.join(root, 'node_modules'),
+              nps.join(projPath, 'node_modules')
+            ],
         },
 
         resolveLoader: {
-            root: nps.join(projPath),
+            root: [
+              nps.join(root, 'node_modules'),
+              nps.join(projPath, 'node_modules')
+            ],
             // root: nps.join(root),
         },
 

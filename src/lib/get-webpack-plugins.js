@@ -3,8 +3,6 @@
  * @author yucong02
  */
 const webpack = require('webpack')
-const HappyPack = require('happypack')
-const happyThreadPool = new HappyPack.ThreadPool({size: 4})
 const npmInstall = require('./npm-install-webpack-plugin')
 const install = require('./install')
 const pkg = require('../../package.json')
@@ -63,18 +61,18 @@ module.exports = function (obj = {}) {
     }
 
     if (config && config.module && config.module.loaders) {
-        let loaders = config.module.loaders
-        let happyIds = loaders.filter(x => !!x.happy && !!x.happy.id).map(x => x.happy.id)
-        // console.log('happyIds', happyIds)
-        happyIds.forEach(function (id) {
-            plugins = plugins.concat(
-                new HappyPack({
-                    id: id,
-                    threadPool: happyThreadPool,
-                    verbose: false
-                })
-            )
-        })
+        // let loaders = config.module.loaders
+        // let happyIds = loaders.filter(x => !!x.happy && !!x.happy.id).map(x => x.happy.id)
+        // // console.log('happyIds', happyIds)
+        // happyIds.forEach(function (id) {
+        //     plugins = plugins.concat(
+        //         new HappyPack({
+        //             id: id,
+        //             threadPool: happyThreadPool,
+        //             verbose: false
+        //         })
+        //     )
+        // })
     }
 
     return plugins
