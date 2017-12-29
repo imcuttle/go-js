@@ -58,7 +58,17 @@ GoJS.prototype._init = function () {
     this.app.all('/', (req, res, next) => {
         res.sendFile(nps.join(__dirname, 'template/index.html'))
     });
-    this.app.use('/__gojs/file-view/', dirViewMiddleware({root: this.opts.path, redirect: true}));
+    const filter = function (filename) {
+        // console.log(filename)
+
+        return !(
+            // /[\/\\]node_modules\1?/.test(filename) ||
+            nps.basename(filename) === '.entry' ||
+            nps.basename(filename) === '.dist'
+            // || nps.basename(filename) === 'node_modules'
+        )
+    }
+    this.app.use('/__gojs/file-view/', dirViewMiddleware({root: this.opts.path, redirect: true, filter }));
     this.app.use((req, res, next) => {
         const now = Date.now()
         res.on('finish', () => this.emit('request', req, res, now))

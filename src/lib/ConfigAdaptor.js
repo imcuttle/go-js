@@ -68,7 +68,7 @@ function getConfig(root, type, dev) {
             // root: nps.join(projPath),
             root: [
               nps.join(root, 'node_modules'),
-              nps.join(projPath, 'node_modules')
+              // nps.join(projPath, 'node_modules')
             ],
         },
 
