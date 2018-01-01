@@ -53,6 +53,7 @@ module.exports = function (req, res, next) {
     } else {
         const err = new Error(`File not found: ${path}`)
         err.code = 'ENOENT'
+        err.path = path
         next(err)
     }
 }
