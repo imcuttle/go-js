@@ -8,7 +8,7 @@ req.over()
 const express = require('express')
 const getPort = require('get-port')
 const nps = require('path')
-const chokidar = require('chokidar')
+// const chokidar = require('chokidar')
 const _ = require('lodash')
 const inherits = require('util').inherits
 const dirViewMiddleware = require('express-dirview-middleware')
@@ -80,22 +80,22 @@ GoJS.prototype._init = function () {
     this.app.use(errorMiddleware)
 
 
-    this.watcher = chokidar.watch(this.opts.path, {
-        ignoreInitial: true,
-        ignoreCase: /node_modules|\.git|^\..+|[\/\\]\..+/
-    })
-    this.watcher.on('unlink', fp => {
-        fp = fp.substring(this.opts.path.length).replace(/^\//g, '')
-        if (/jsx?$/.test(fp) && !/(node_modules)/.test(fp) && !/^\./.test(fp)) {
-            this.emit('watch', 'unlink', fp)
-
-            if (this.configAdaptor.rmEntry(fp)) {
-                this.emit('rmEntry', fp)
-
-                // setWebpackMiddleware(this.app, this.configAdaptor.getConfig())
-            }
-        }
-    })
+    // this.watcher = chokidar.watch(this.opts.path, {
+    //     ignoreInitial: true,
+    //     ignoreCase: /node_modules|\.git|^\..+|[\/\\]\..+/
+    // })
+    // this.watcher.on('unlink', fp => {
+    //     fp = fp.substring(this.opts.path.length).replace(/^\//g, '')
+    //     if (/jsx?$/.test(fp) && !/(node_modules)/.test(fp) && !/^\./.test(fp)) {
+    //         this.emit('watch', 'unlink', fp)
+    //
+    //         if (this.configAdaptor.rmEntry(fp)) {
+    //             this.emit('rmEntry', fp)
+    //
+    //             // setWebpackMiddleware(this.app, this.configAdaptor.getConfig())
+    //         }
+    //     }
+    // })
 }
 
 
@@ -143,7 +143,7 @@ GoJS.prototype.stop = function (cb) {
     if (this.running) {
         this.removeAllListeners()
         this.entryHandler.exit()
-        this.watcher && this.watcher.close()
+        // this.watcher && this.watcher.close()
         process.chdir(this.prevCwd)
         this.server.close(cb)
         this.running = false
