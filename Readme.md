@@ -31,7 +31,32 @@ npm install -g go-js
 gojs -h
 ```
 
+## Customized Loader
 
+可以在当前工作目录下书写自己的 `gojs.jsloader.js`
+
+```javascript
+module.exports = [
+    {
+      test: /\.jsx?$/,
+      loader: 'babel-loader',
+      include: [
+        // root
+      ],
+      query: {
+        cacheDirectory: true,
+        presets: [
+          require.resolve('babel-preset-es2015'),
+          require.resolve('babel-preset-react'),
+          require.resolve('babel-preset-stage-0')
+        ],
+        plugins: [
+          require.resolve('babel-plugin-transform-decorators-legacy'),
+        ]
+      }
+    },
+]
+```
 ## Todo
 
 - [ ] 添加上对 TypeScript 的支持（CoffeeScript先放放）
