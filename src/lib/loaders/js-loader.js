@@ -8,6 +8,9 @@ module.exports = [
     include: [
       // root
     ],
+    exclude: [
+      /([\/\\])node_modules\1(core-js|babel-runtime)\1/
+    ],
     query: {
       cacheDirectory: true,
       presets: [
