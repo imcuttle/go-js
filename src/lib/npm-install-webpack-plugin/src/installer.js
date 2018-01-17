@@ -70,8 +70,10 @@ module.exports.check = function(request) {
 };
 
 module.exports.checkBabel = function checkBabel() {
+  var babelrcOptions = {}
   try {
     var babelrc = require.resolve(path.join(process.cwd(), ".babelrc"));
+    babelrcOptions = JSON.parse(fs.readFileSync(babelrc, "utf8"))
   } catch (e) {
     // Babel isn't installed, don't install deps
     return;
@@ -81,7 +83,7 @@ module.exports.checkBabel = function checkBabel() {
   var options = Object.assign({
     plugins: [],
     presets: [],
-  }, JSON.parse(fs.readFileSync(babelrc, "utf8")));
+  }, babelrcOptions);
 
   if (!options.env) {
     options.env = {};
