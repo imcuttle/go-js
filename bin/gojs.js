@@ -49,7 +49,7 @@ if (opts.version) {
 
 if (opts.build) {
     req.unover()
-    req.over()
+    req.over([opts.path])
 
     const template = require('lodash').template
     const readFileSync = require('fs').readFileSync
