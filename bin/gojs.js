@@ -3,6 +3,7 @@
 let argv = require('minimist')(process.argv.slice(2));
 const log = require('../dist/lib/log')
 const nps = require('path')
+const req = require('../dist/lib/require')
 
 const opts = {
     verbose: !!argv.v || !!argv.verbose,
@@ -47,6 +48,9 @@ if (opts.version) {
 
 
 if (opts.build) {
+    req.unover()
+    req.over()
+
     const template = require('lodash').template
     const readFileSync = require('fs').readFileSync
     const fsExtra = require('fs-extra')
@@ -67,7 +71,7 @@ if (opts.build) {
         }
     }
 
-    config.plugins = getPlugins({dev: false, config})
+    config.plugins = getPlugins({ dev: false, config })
     config.output.path = dest
     // config.context = dest
     config.module.loaders = config.module.loaders.map(loader => {
