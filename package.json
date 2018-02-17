@@ -1,6 +1,6 @@
 {
   "name": "go-js",
-  "version": "1.3.8",
+  "version": "1.3.9",
   "description": "Potty frontend commonjs webpack server",
   "main": "dist/index.js",
   "scripts": {
