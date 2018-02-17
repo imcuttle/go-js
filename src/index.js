@@ -23,6 +23,7 @@ const log = require('./lib/log')
 function GoJS(opts) {
     this.opts = _.merge({
         verbose: true,
+        silent: false,
         path: process.cwd(),
         type: 'js',
         port: null

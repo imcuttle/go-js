@@ -11,7 +11,7 @@ module.exports = function (gojs) {
 
     gojs.on('server', port => {
         // console.log(`Server run on http://localhost:${port}`)
-        log.info({
+        !gojs.opts.silent && log.info({
             url: `http://localhost:${port}`,
             message: `go-js is listening on`
         })
@@ -21,7 +21,7 @@ module.exports = function (gojs) {
         if (req.url.startsWith('/__gojs')) return
         if (req.path === '/favicon.ico' /*&& res.statusCode === 404*/) return // don't log favicon.ico 404s
 
-        log.info({
+        !gojs.opts.silent && log.info({
             elapsed: Date.now() - start,
             method: req.method,
             url: req.url,
@@ -31,21 +31,21 @@ module.exports = function (gojs) {
     })
 
     gojs.on('addEntry', entry => {
-        log.info({
+        !gojs.opts.silent && log.info({
             type: 'entry',
             message: `addEntry: \n${JSON.stringify(entry, null, 2)}`
         })
     })
 
     gojs.on('rmEntry', entry => {
-        log.info({
+        !gojs.opts.silent && log.info({
             type: 'entry',
             message: `rmEntry: ${entry}`
         })
     })
 
     gojs.on('watch', (type, filePath) => {
-        log.info({
+        !gojs.opts.silent && log.info({
             type: 'watch',
             message: `${filePath} has been changed (${type})`
         })

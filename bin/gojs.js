@@ -9,6 +9,7 @@ const opts = {
     help: !!argv.h || !!argv.help,
     version: !!argv.version,
     openSync: !argv.noopen,
+    silent: !!argv.silent || !!argv.s,
     port: argv.port || argv.p,
     path: argv._.length > 0 ? argv._[0] : process.cwd(),
     type: argv.type || argv.t || 'js',
@@ -28,6 +29,7 @@ if (opts.help) {
     console.log('  --version                   get current version');
     console.log('  -h --help                   how to use it');
     console.log('  -v --verbose                verbose talk');
+    console.log('  -s --silent                 silent');
     console.log('  --noopen                    disable open browser synchronously');
     console.log('  -p --port                   set server port');
     console.log('  -t --type                   set type (only support `js` now, and will add `ts/coffee` in the future)');
