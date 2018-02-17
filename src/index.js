@@ -12,12 +12,13 @@ const nps = require('path')
 const _ = require('lodash')
 const inherits = require('util').inherits
 const dirViewMiddleware = require('express-dirview-middleware')
-const setWebpackMiddleware = require('./lib/setup-webpack-middleware')
 const preInstall = require('./lib/pre-install')
 const errorMiddleware = require('./lib/error-middleware')
 const ConfigAdaptor = require('./lib/ConfigAdaptor')
 const routes = require('./lib/routes')
 const EntryHandler = require('./lib/EntryHandler')
+const setUpFallback = require('./lib/setUpFallback')
+const log = require('./lib/log')
 
 function GoJS(opts) {
     this.opts = _.merge({
@@ -60,7 +61,6 @@ GoJS.prototype._init = function () {
     });
     const filter = function (filename) {
         // console.log(filename)
-
         return !(
             // /[\/\\]node_modules\1?/.test(filename) ||
             nps.basename(filename) === '.entry' ||
@@ -74,6 +74,15 @@ GoJS.prototype._init = function () {
         res.on('finish', () => this.emit('request', req, res, now))
         next()
     })
+
+    let fallbackConfig
+    try {
+        fallbackConfig = require(nps.join(this.opts.path, 'gojs.fallback.js'))
+    } catch (ex) {}
+    if (fallbackConfig) {
+        setUpFallback(this.app, fallbackConfig, `http://localhost:${this.opts.port}/`)
+        log.info('Fallback config working: ' + nps.join(this.opts.path, 'gojs.fallback.js'))
+    }
 
     this.app.use(routes)
     this.app.use(express.static(this.opts.path))
