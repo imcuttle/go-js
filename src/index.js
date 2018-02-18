@@ -81,7 +81,7 @@ GoJS.prototype._init = function () {
         fallbackConfig = require(nps.join(this.opts.path, 'gojs.fallback.js'))
     } catch (ex) {}
     if (fallbackConfig) {
-        setUpFallback(this.app, fallbackConfig, `http://localhost:${this.opts.port}/`)
+        setUpFallback(this.app, fallbackConfig, { host: `http://localhost:${this.opts.port}/`, path: this.opts.path })
         log.info('Fallback config working: ' + nps.join(this.opts.path, 'gojs.fallback.js'))
     }
 
