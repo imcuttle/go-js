@@ -168,7 +168,8 @@ NpmInstallPlugin.prototype.resolveLoader = function(result, next) {
     this.resolving[result.request] = false;
 
     if (err) {
-      var loader = utils.normalizeLoader(result.request);
+      
+      var loader = result.request.split('!').pop();
       this.install(Object.assign({}, result, { request: loader }));
     }
 
